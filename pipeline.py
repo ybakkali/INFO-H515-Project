@@ -9,13 +9,13 @@ import pandas as pd
 from start_session import *
 
 
-
-
 class Pipeline:
-    def predict_missing_values(self, df: Union[pd.DataFrame, DataFrame]) -> DataFrame:
+    @staticmethod
+    def predict_missing_values(df: Union[pd.DataFrame, DataFrame]) -> DataFrame:
         """
         This function will predict missing values in a dataframe using Pyspark MLlib
         """
+        # TODO there are actually no missing value in any dataset ^^'
         if isinstance(df, pd.DataFrame):
             # Convert the pandas dataframe to a spark dataframe
             df = SparkSession.builder.getOrCreate().createDataFrame(df)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     dataset.load_dataset(DatasetEnum.candidate_items)
     df_main = dataset.candidate_items
     # Predict missing values
-    print("Before predicting missing values : ", df_main.count())
+    print("Before predicting missing values", df_main.count())
     df_main = pipeline.predict_missing_values(df_main)
     # show the difference
     print("After predicting missing values : ", df_main.count())
